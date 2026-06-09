@@ -1,5 +1,6 @@
 package a12541406;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,17 +26,23 @@ public class Concoction extends Potion {
 	private List<Spell> spells;
 
 	/**
-	 * @param name name
+	 * @param name   name
 	 * @param usages number of usages still left
-	 * @param price price
+	 * @param price  price
 	 * @param weight weight
 	 * @param health change of health on target
-	 * @param mana change of mana on target
-	 * @param spells list of spells that are cast when consuming the concoction 
+	 * @param mana   change of mana on target
+	 * @param spells list of spells that are cast when consuming the concoction
 	 */
-	public Concoction(String name,	int usages, int price, int weight, int health, int mana, List<Spell> spells) {
+	public Concoction(String name, int usages, int price, int weight, int health, int mana, List<Spell> spells) {
+		super(name, usages, price, weight);
+		if (spells.isEmpty())
+			throw new IllegalArgumentException("Spells empty");
+		this.mana = mana;
+		this.health = health;
+		this.spells = new ArrayList<>(spells);
 	}
-	
+
 	/**
 	 * Returns "; '+/-''health' HP; '+/-''mana' MP; cast 'spells' ";
 	 * here '+/-' denotes the appropriate sign, spells will be a bracketed list
@@ -43,10 +50,26 @@ public class Concoction extends Potion {
 	 * e.g. (total result of toString) "[My Brew; 2 g; 2 Knuts; 4 gulps; -5 HP; +10 MP; cast [[Confringo(*) -20 HP], [Diffindo(*) -15 HP]]]"
 	 * If health or mana is 0 or spells is empty, then the respective part(s) are suppressed
 	 * e. g. "[Your Brew; 2 g; 1 Knut; 1 gulp; +5 MP]
+	 *
 	 * @return "; '+/-''health' HP; '+/-''mana' MP; cast 'spells' "
 	 */
 	@Override
 	public String additionalOutputString() {
+		StringBuilder sb = new StringBuilder();
+		if (health > 0) {
+			sb.append("; +").append(health).append(" HP");
+		} else if (health < 0) {
+			sb.append("; ").append(health).append(" HP");
+		}
+		if (mana > 0) {
+			sb.append("; +").append(mana).append(" MP");
+		} else if (mana < 0) {
+			sb.append("; ").append(mana).append(" MP");
+		}
+		if (spells != null && !spells.isEmpty()) {
+			sb.append("; cast ").append(spells);
+		}
+		return sb.toString();
 	}
 
 	/**
@@ -56,9 +79,26 @@ public class Concoction extends Potion {
 	 * change MP of target by mana (call method enforceMagic(mana) or weakenMagic(mana)
 	 * depending on sign of mana) and
 	 * call cast Method for every spell in spells.
+	 *
 	 * @param target target that takes the magic effects
 	 */
-	@Override  
+	@Override
 	public void useOn(MagicEffectRealization target) {
+		if(tryUsage()) {
+			if(health<0)
+				target.takeDamage(health);
+			else {
+				target.heal(health);
+			}
+			if(mana<0){
+				target.weakenMagic(mana);
+			}
+			else {
+				target.enforceMagic(mana);
+			}
+			for(Spell spell : spells){
+				spell.cast(this, target);
+			}
+		};
 	}
 }

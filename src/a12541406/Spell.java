@@ -19,44 +19,72 @@ public abstract class Spell {
 	private MagicLevel levelNeeded;
 
 	/**
-	 * @param name name
-	 * @param manaCost manaCost
+	 * @param name        name
+	 * @param manaCost    manaCost
 	 * @param levelNeeded levelNeeded to cast the spell
 	 */
 	public Spell(String name, int manaCost, MagicLevel levelNeeded) {
+		if (name == null || name.isEmpty())
+			throw new IllegalArgumentException("skdfjikdsjf");
+		if (manaCost < 0)
+			throw new IllegalArgumentException("skdfjikdsjf");
+		if (levelNeeded == null)
+			throw new IllegalArgumentException("skdfjikdsjf");
+		this.name = name;
+		this.manaCost = manaCost;
+		this.levelNeeded = levelNeeded;
+
 	}
-	  
+
 	/**
 	 * Ensure necessary magic level and get necessary energy by calling provideMana
 	 * on source (this will typically reduce MP in source).
 	 * If provideMana fails (returns false) cast is canceled
 	 * otherwise the abstract method doEffect is called
+	 *
 	 * @param source caster of the spell
 	 * @param target target of the spell
 	 */
 	public void cast(MagicSource source, MagicEffectRealization target) {
+		if (source.provideMana(levelNeeded, manaCost)) {
+			this.doEffect(target);
+			return;
+		}
+		return;
 	}
-	  
-	/**
-	 * The actual effect of the spell on target must be implemented by the subclasses
-	 * @param target target of the spell
-	 */
-	public abstract void doEffect(MagicEffectRealization target);
-	  
-	/**
-	 * Returns ""; is overridden in deriving classes when needed
-	 * @return ""
-	 */
-	public String additionalOutputString() {
+		/**
+		 * The actual effect of the spell on target must be implemented by the subclasses
+		 * @param target target of the spell
+		 */
+		public abstract void doEffect (MagicEffectRealization target);
+
+		/**
+		 * Returns ""; is overridden in deriving classes when needed
+		 * @return ""
+		 */
+		public String additionalOutputString () {
+			return "";
+		}
+
+		/**
+		 * Return output in format "['name'('levelNeeded'): 'manaCost' mana'additionalOutputString']";
+		 * where 'levelNeeded' is displayed as asterisks (see MagicLevel.toString)
+		 * e.g. (full Output containing additionalOutputString) [Episkey(*): 5 mana; +20 HP]
+		 * @return "['name'('levelNeeded'): 'manaCost' mana'additionalOutputString']"
+		 */
+		@Override
+		public String toString () {
+			StringBuilder sb = new StringBuilder();
+			sb.append("[ ");
+			sb.append(name);
+			sb.append(" (");
+			sb.append(levelNeeded);
+			sb.append(" ): ");
+			sb.append(manaCost);
+			sb.append(" ");
+			sb.append(mana);
+			sb.append(additionalOutputString());
+			sb.append(" ]");
+			return sb;
+		}
 	}
-	  
-	/**
-	 * Return output in format "['name'('levelNeeded'): 'manaCost' mana'additionalOutputString']";
-	 * where 'levelNeeded' is displayed as asterisks (see MagicLevel.toString)
-	 * e.g. (full Output containing additionalOutputString) [Episkey(*): 5 mana; +20 HP]
-	 * @return "['name'('levelNeeded'): 'manaCost' mana'additionalOutputString']"
-	 */ 
-	@Override
-	public String toString() {
-	}
-}

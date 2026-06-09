@@ -17,6 +17,11 @@ public class HealthPotion extends Potion {
 	 * @param health change of health on consumer
 	 */
 	public HealthPotion(String name, int usages, int price, int weight, int health) {
+		super(name, usages, price, weight);
+
+		if(health<0)
+			throw new IllegalArgumentException("jdsfnjnf");
+
 	}
 	
 	/**
@@ -26,6 +31,7 @@ public class HealthPotion extends Potion {
 	 */
 	@Override
 	public String additionalOutputString() {
+		return  "; "+ health + "HP";
 	}
 
 	/**
@@ -35,5 +41,7 @@ public class HealthPotion extends Potion {
 	 */
 	@Override  
 	public void useOn(MagicEffectRealization target) {
+		if(this.tryUsage())
+			target.heal(health);
 	}
 }

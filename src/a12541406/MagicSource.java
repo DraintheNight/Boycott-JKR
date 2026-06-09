@@ -12,9 +12,11 @@ public interface MagicSource {
      * returning false if not. Otherwise it reduces the object's MP by manaAmount.
      * There may be exceptions though, like objects with infinite mana or supporting
      * all levels  for example
+     *
      * @param levelNeeded mana can only be provided if the object at least has magic level levelNeeded
-     * @param manaAmount amount of mana to provide
+     * @param manaAmount  amount of mana to provide
      * @return true, if mana could be successfully provided, false otherwise
      */
 
-	boolean provideMana(MagicLevel levelNeeded, int manaAmount)
+    boolean provideMana(MagicLevel levelNeeded, int manaAmount);
+}

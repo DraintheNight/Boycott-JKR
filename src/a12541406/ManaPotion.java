@@ -17,6 +17,10 @@ public class ManaPotion extends Potion {
 	 * @param mana amount of mana provided to the consumer
 	 */
 	public ManaPotion(String name, int usages, int price, int weight, int mana) {
+		super(name, usages, price, weight);
+		if(mana<0)
+			throw new IllegalArgumentException("Jidjsifg");
+		this.mana = mana;
 	}
 
 	/**
@@ -26,6 +30,7 @@ public class ManaPotion extends Potion {
 	 */
 	@Override
 	public String additionalOutputString() {
+		return "; +" + mana + "MP";
 	}
 
 	/**
@@ -35,5 +40,8 @@ public class ManaPotion extends Potion {
 	 */
 	@Override  
 	public void useOn(MagicEffectRealization target) {
+		if(this.tryUsage())
+			target.enforceMagic(mana);
+
 	}
 }
