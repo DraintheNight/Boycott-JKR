@@ -10,7 +10,10 @@ public abstract class Potion extends MagicItem {
 	 * @param price price
 	 * @param weight weight
 	 */
+
+
 	public Potion(String name, int usages, int price, int weight) {
+		super(name, usages, price, weight);
 	}
 	
 	/**
@@ -18,6 +21,7 @@ public abstract class Potion extends MagicItem {
 	 * @param drinker the consumer of the potion
 	 */
 	public void drink(Wizard drinker) {
+			useOn(drinker);
 	}
 	  
 	/**
@@ -26,5 +30,9 @@ public abstract class Potion extends MagicItem {
 	 */
 	@Override
 	public String usageString() {
+		if(getUsages() ==1){
+			return "gulp";
+		}
+		return "gulp";
 	}
 }

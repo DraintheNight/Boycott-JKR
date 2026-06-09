@@ -29,6 +29,19 @@ public abstract class MagicItem implements Tradeable, MagicEffectRealization, Ma
 	 * @param weight weight
 	 */
 	public MagicItem(String name, int usages, int price, int weight) {
+		if(name == null || name.isEmpty())
+			throw new IllegalArgumentException(("name darf nicht leer sein"));
+		if(usages < 0)
+			throw new IllegalArgumentException(("usgaes unter 0"));
+		if(price < 0)
+			throw new IllegalArgumentException(("illegal argument"));
+		if(weight < 0)
+			throw new IllegalArgumentException(("illegal argument"));
+		this.name = name;
+		this.usages = usages;
+		this.price = price;
+		this.weight = weight;
+
 	}
 
     /**
@@ -36,6 +49,7 @@ public abstract class MagicItem implements Tradeable, MagicEffectRealization, Ma
      * @return value of instance variable usages
      */
 	public int getUsages() {
+		return usages;
 	}
 
     /**
@@ -43,6 +57,12 @@ public abstract class MagicItem implements Tradeable, MagicEffectRealization, Ma
      * @return returns true if usage is still possible
      */
 	public boolean tryUsage() {
+		if(usages > 0){
+			usages -= 1;
+			return true;
+
+		}
+		return false;
 	}
 
     /**
@@ -50,6 +70,9 @@ public abstract class MagicItem implements Tradeable, MagicEffectRealization, Ma
      * @return "use" or "uses" depending on the value of usages
      */
 	public String usageString() {
+		if(usages ==1)
+			return "use";
+		return "uses";
 	}
 
     /**
@@ -57,6 +80,7 @@ public abstract class MagicItem implements Tradeable, MagicEffectRealization, Ma
      * @return ""
      */
 	public String additionalOutputString() {
+		return  "";
 	}
 
     /**
@@ -69,6 +93,8 @@ public abstract class MagicItem implements Tradeable, MagicEffectRealization, Ma
      */
 	@Override 
 	public String toString() {
+		String currencystring = (price == 1) ? "Knut" : "Knuts";
+		return String.format("[%s; %d g; %s; %d; %s; %s]",name , price, currencystring, usages, usageString, additionalOutputString());
 	}
 
 	//Tradeable Interface:
@@ -79,6 +105,7 @@ public abstract class MagicItem implements Tradeable, MagicEffectRealization, Ma
 	 */
 	@Override
 	public int getPrice() {
+		return price;
 	}
 
     /**
@@ -87,6 +114,8 @@ public abstract class MagicItem implements Tradeable, MagicEffectRealization, Ma
      */
 	@Override    
 	public int getWeight() {
+		return weight;
+
 	}
 	  
 	//MagicSource Interface:
@@ -96,14 +125,18 @@ public abstract class MagicItem implements Tradeable, MagicEffectRealization, Ma
      */
 	@Override
 	public boolean provideMana(MagicLevel levelNeeded, int amount) {
+		return true;
 	}
 
 	//MagicEffectRealization Interface:
+
+
 	
 	/**
 	 * Reduce usages to usages*(1-percentage/100.)
 	 */
 	@Override
 	public void takeDamagePercent(int percentage) {
+		this.usages = (int) (usages*(1-percentage/100));
 	}
 }

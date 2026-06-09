@@ -15,6 +15,6 @@ public interface MagicSource {
      * @param levelNeeded mana can only be provided if the object at least has magic level levelNeeded
      * @param manaAmount amount of mana to provide
      * @return true, if mana could be successfully provided, false otherwise
-     */ 
-	boolean provideMana(MagicLevel levelNeeded, int manaAmount);
-}
+     */
+
+	boolean provideMana(MagicLevel levelNeeded, int manaAmount)
