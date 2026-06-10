@@ -53,5 +53,19 @@ public class HealingSpell extends Spell {
 	 */
 	@Override
 	public String additionalOutputString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("; + ");
+		sb.append(amount);
+		if(percentage){
+			sb.append("%");
+		}
+		sb.append(" ");
+		if(HP){
+			sb.append("HP");
+			return sb.toString();
+		}
+		sb.append("MP");
+		return sb.toString();
+
 	}
 }
