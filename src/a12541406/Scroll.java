@@ -19,6 +19,12 @@ public class Scroll extends MagicItem {
 	 * @param spell spell that is written on the scroll and can therefore be cast
 	 */
 	public Scroll(String name, int usages, int price, int weight, Spell spell) {
+		super(name, usages, price, weight);
+		if(spell == null){
+			throw new IllegalArgumentException("jdshfjodshjfo");
+		}
+		this.spell = spell;
+
 	}
 	  
 	/**
@@ -29,7 +35,9 @@ public class Scroll extends MagicItem {
 	 */
 	@Override
 	public String additionalOutputString() {
+		return "; casts " + spell;
 	}
+
 
 	/**
 	 * If usages is greater than 0 reduce usages by 1 (tryUsage method) and
@@ -38,5 +46,8 @@ public class Scroll extends MagicItem {
 	 */
 	@Override  
 	public void useOn(MagicEffectRealization target) {
+		if(tryUsage()){
+			spell.cast(this, target);
+		}
 	}
 }

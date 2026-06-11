@@ -21,7 +21,7 @@ public class HealingSpell extends Spell {
 	 */
 	private boolean percentage;
 	/**
-	 * Has to be non negative; if percentage==true, amount must be in the interval [0,100]
+	 * Has to be non-negative; if percentage==true, amount must be in the interval [0,100]
 	 */
 	private int amount;
 
@@ -34,6 +34,16 @@ public class HealingSpell extends Spell {
 	 * @param amount amount
 	 */
 	public HealingSpell(String name, int manaCost, MagicLevel levelNeeded, boolean type, boolean percentage, int amount) {
+		super(name, manaCost, levelNeeded);
+		if(percentage){
+			if(amount<0 || amount > 100){
+				throw new IllegalArgumentException(("sddfjshf"));
+			}
+		}
+		if(amount<0){
+			throw new IllegalArgumentException(("sddfjshf"));
+		}
+		this.type = type; this.percentage = percentage; this.amount = amount;
 	}
 	
 	/**
@@ -43,6 +53,20 @@ public class HealingSpell extends Spell {
 	 */
 	@Override	
 	public void doEffect(MagicEffectRealization target) {
+		if(type){
+			if(percentage){
+				target.healPercent(amount);
+				return;
+			}
+				target.heal(amount);
+		}
+			if(!type){
+				if(percentage){
+					target.enforceMagicPercent(amount);
+					return;
+				}
+					target.enforceMagic(amount);
+			}
 	}
 
 	/**

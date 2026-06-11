@@ -76,6 +76,10 @@ public class Wizard implements MagicSource, Trader, MagicEffectRealization {
 	 * @return true, if HP is 0, false otherwise
 	 */
 	public boolean isDead() {
+		if(HP == 0){
+			return true;
+		}
+		return false;
 	}  
 	  
 	/**

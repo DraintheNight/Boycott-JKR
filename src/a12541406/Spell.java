@@ -85,6 +85,6 @@ public abstract class Spell {
 			sb.append(mana);
 			sb.append(additionalOutputString());
 			sb.append(" ]");
-			return sb;
+			return sb.toString();
 		}
 	}

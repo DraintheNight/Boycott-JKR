@@ -36,6 +36,8 @@ public class AttackingSpell extends Spell {
 	 * @param amount amount
 	 */
 	public AttackingSpell(String name,	int manaCost, MagicLevel levelNeeded, boolean type, boolean percentage, int amount) {
+		super(name, manaCost, levelNeeded);
+
 	}
 
 	/**

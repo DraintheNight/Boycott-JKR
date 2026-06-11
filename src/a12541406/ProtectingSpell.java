@@ -1,5 +1,6 @@
 package a12541406;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -18,7 +19,14 @@ public class ProtectingSpell extends Spell {
 	 * @param attacks attacking spells against which protection is granted
 	 */
 	public ProtectingSpell(String name, int manaCost, MagicLevel levelNeeded, Set<AttackingSpell> attacks) {
+		super(name, manaCost, levelNeeded);
+		if(attacks == null || attacks.isEmpty()){
+			throw new IllegalArgumentException(("fjfjfjff"));
+		}
+		attacks = new HashSet<AttackingSpell>(attacks);
+
 	}
+
 	
 	/**
 	 * Call setProtection method on target with attacks as parameter
@@ -26,6 +34,7 @@ public class ProtectingSpell extends Spell {
 	 */
 	@Override
 	public void doEffect(MagicEffectRealization target) {
+		target.setProtection(attacks);
 	}
 
 	/**
@@ -36,5 +45,6 @@ public class ProtectingSpell extends Spell {
 	 */
 	@Override
 	public String additionalOutputString() {
+		return "; protects against [" + attacks.toString() + "]";
 	}
 }
