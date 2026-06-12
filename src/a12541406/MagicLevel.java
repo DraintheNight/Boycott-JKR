@@ -19,9 +19,10 @@ public enum MagicLevel {
         this.mp = mp;
     }
 
-public toMana(){
+
+    public int toMana() {
         return this.mp;
-}
+    }
     @Override
     public String toString() {
         return switch(this){
