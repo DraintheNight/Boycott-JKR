@@ -214,7 +214,9 @@ public class Wizard implements MagicSource, Trader, MagicEffectRealization {
 		}
 		Random random = new Random();
 		ArrayList<Spell> List = new ArrayList<>(knownSpells);
-		Spell rndm = List(random.nextInt(List.size()));
+		Spell rndm = List.get(random.nextInt(List.size()));
+		return castSpell(rndm, target);
+
 
 	}
 	  
@@ -229,6 +231,18 @@ public class Wizard implements MagicSource, Trader, MagicEffectRealization {
 	 * @return true, if useOn was called, false otherwise
 	 */
 	public boolean useItem(Tradeable item, MagicEffectRealization target) {
+		if(item == null || target == null){
+			throw new IllegalArgumentException("Item or target = null!");
+		}
+		if(isDead()){
+			return false;
+		}
+		if(!inventory.contains(item)){
+			return false;
+		}
+		item.useOn(target);
+		return true;
+
 	}
 
 	/**
@@ -240,6 +254,15 @@ public class Wizard implements MagicSource, Trader, MagicEffectRealization {
 	 * result of the delegation to useItem
 	 */
 	public boolean useRandomItem(MagicEffectRealization target) {
+		if(inventory.isEmpty()){
+			return false;
+		}
+		Random random = new Random();
+		ArrayList<Tradeable> list = new ArrayList<Tradeable>(inventory);
+		Tradeable rndm = list.get(random.nextInt(inventory.size()));
+		return useItem(rndm, target);
+
+
 	}
 	  
 	/**
@@ -254,6 +277,16 @@ public class Wizard implements MagicSource, Trader, MagicEffectRealization {
 	 * otherwise.
 	 */ 
 	public boolean sellItem(Tradeable item, Trader target) {
+		if(item == null || target == null){
+		throw new IllegalArgumentException("Trader, item null");
+		}
+		if(isDead()){
+			return false;
+		}
+		return item.purchase(this, target);
+
+
+
 	}
 
 	/**
@@ -265,6 +298,13 @@ public class Wizard implements MagicSource, Trader, MagicEffectRealization {
 	 * result of the delegation to sellItem
 	 */
 	public boolean sellRandomItem(Trader target) {
+		if(inventory.isEmpty()){
+			return false;
+		}
+		Random random = new Random();
+		Arraylist<Tradeable> list = new ArrayList<Tradeable>(inventory);
+		Tradeable rndm = list.get(random.nextInt((list.size())));
+		return sellItem(rndm, target);
 	}
 
 	/**
